@@ -12,5 +12,6 @@ public class UsersService {
 
     public void insert(Users users){
         usersRepository.insert(users);
+        
     }
 }
