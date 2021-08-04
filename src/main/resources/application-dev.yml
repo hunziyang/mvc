@@ -1,0 +1,21 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    password: 123456
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 300
+        max-idle: 16
+        min-idle: 8
+  data:
+    mongodb:
+      uri: mongodb://root:123456@localhost:27017/?authSource=admin
+      database: yang
+logging:
+  level:
+    com.yang.mvc: debug
+server:
+  port: 8888
