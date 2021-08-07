@@ -16,6 +16,7 @@ spring:
       database: yang
 logging:
   level:
-    com.yang.mvc: debug
+    com.yang.mvc: DEBUG
+    org.springframework.data.mongodb.core: DEBUG
 server:
   port: 8888
