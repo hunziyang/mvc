@@ -2,7 +2,6 @@ package com.yang.mvc.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -21,29 +20,15 @@ public class JwtUtils {
     // 请求头
     public static final String AUTH_HEADER = "Authentication";
 
+    public static final String REFRESH_TOKEN = "Refresh_Token";
+
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    /**
-     * 验证token是否正确
-     */
-    public static boolean verify(String token, String subject) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET);
-        JWTVerifier verifier = JWT.require(algorithm).withSubject(subject).build();
-        verifier.verify(token);
-        return true;
-    }
-
-    /**
-     * 获得token中的自定义信息，无需secret解密也能获得
-     */
     public static String getSubject(String token) {
         DecodedJWT jwt = JWT.decode(token);
         return jwt.getSubject();
     }
 
-    /**
-     * 生成签名
-     */
     public static String sign(String username) {
         long time = System.currentTimeMillis();
         Date date = new Date(time);
@@ -52,13 +37,16 @@ public class JwtUtils {
         return JWT.create().withSubject(username).withIssuedAt(date).withExpiresAt(expireDate).sign(algorithm);
     }
 
-    /**
-     * 获取 token的签发时间
-     */
     public static Date getIssuedAt(String token) {
         DecodedJWT jwt = JWT.decode(token);
         return jwt.getIssuedAt();
     }
+
+    public static Date getExpiresAt(String token) {
+        DecodedJWT jwt = JWT.decode(token);
+        return jwt.getExpiresAt();
+    }
+
 
     /**
      * 验证 token是否过期
