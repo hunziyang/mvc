@@ -36,12 +36,12 @@ public class AnnotationUtil {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
         RequiresRoles requiresRoles = method.getAnnotation(RequiresRoles.class);
-        String logical = requiresRoles.logical();
+        RequiresRoles.Logical logical = requiresRoles.logical();
         String[] values = requiresRoles.values();
-        if ("and".equals(logical)) {
+        if (RequiresRoles.Logical.AND.equals(logical)) {
             return roles.containsAll(Arrays.asList(values));
         }
-        if ("or".equals(logical)) {
+        if (RequiresRoles.Logical.OR.equals(logical)) {
             for (String value : values) {
                 if (roles.contains(value)) {
                     return true;

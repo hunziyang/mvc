@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
-    @RequiresRoles(values = {"admin"})
+    @RequiresRoles(values = {"admin","user"},logical = RequiresRoles.Logical.AND)
     @GetMapping("/test")
     public Result test(){
         String usersName = UsersContextHolder.getUsersName();

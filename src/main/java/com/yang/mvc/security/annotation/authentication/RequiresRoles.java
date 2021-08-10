@@ -7,7 +7,9 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequiresRoles {
 
+    public enum Logical{ AND,OR};
+
     String[] values() default "users";
 
-    String logical() default "and";
+    Logical logical() default Logical.AND;
 }
