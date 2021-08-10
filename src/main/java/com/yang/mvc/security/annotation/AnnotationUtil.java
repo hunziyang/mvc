@@ -20,6 +20,7 @@ public class AnnotationUtil {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             Annotation[] annotations = method.getAnnotations();
+            
             for (Annotation annotation : annotations) {
                 if (annotation.annotationType().equals(clazz)) {
                     return true;
