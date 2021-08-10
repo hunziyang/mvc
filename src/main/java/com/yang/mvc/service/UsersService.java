@@ -6,6 +6,7 @@ import com.yang.mvc.common.vo.LoginSuccessUserInfoVo;
 import com.yang.mvc.common.vo.LoginUserInfoVo;
 import com.yang.mvc.dao.UsersRepository;
 import com.yang.mvc.entity.Users;
+import org.apache.catalina.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -25,9 +26,9 @@ public class UsersService {
     public void insert(LoginUserInfoVo loginUserInfoVo) {
         Users user = copyProperties(loginUserInfoVo);
         // todo 权限暂时默认处理
-        List<String> permission = new ArrayList<>();
-        permission.add("goal:insert");
-        user.setPermissions(permission);
+        List<String> roles = new ArrayList<>();
+        roles.add("admin");
+        user.setRoles(roles);
         user.setCreatedTime(new Date());
         user.setUpdatedTime(new Date());
         usersRepository.insert(user);

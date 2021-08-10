@@ -8,6 +8,7 @@ import com.yang.mvc.common.ResultCode;
 import com.yang.mvc.common.vo.LoginSuccessUserInfoVo;
 import com.yang.mvc.security.UsersContextHolder;
 import com.yang.mvc.security.annotation.AnnotationUtil;
+import com.yang.mvc.security.annotation.authentication.UrlPass;
 import com.yang.mvc.utils.JwtUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
@@ -21,12 +22,12 @@ import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class LoginInterceptorHandler implements HandlerInterceptor {
+public class JWTInterceptorHandler implements HandlerInterceptor {
     private static final UsersCacheService usersCacheService = ApplicationContextAwareImpl.getBean(UsersCacheService.class);
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (AnnotationUtil.containUrlPass(handler)) {
+        if (AnnotationUtil.containClazz(handler, UrlPass.class)) {
             return true;
         }
         String token = request.getHeader(JwtUtils.AUTH_HEADER);
@@ -57,9 +58,9 @@ public class LoginInterceptorHandler implements HandlerInterceptor {
     }
 
     private void refreshToken(String token, HttpServletResponse response) {
-//        if (!isAlmostExpired(token)) {
-//            return;
-//        }
+        if (!isAlmostExpired(token)) {
+            return;
+        }
         String newToken = JwtUtils.refreshTokenExpired(token);
         LoginSuccessUserInfoVo loginSuccessUserInfoVo = usersCacheService.getLoginSuccessUserInfoVo(token);
         if (ObjectUtils.isEmpty(loginSuccessUserInfoVo)) {
@@ -80,15 +81,15 @@ public class LoginInterceptorHandler implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         String token = UsersContextHolder.getToken();
         if (StringUtils.isEmpty(token)){
             return;
         }
         usersCacheService.deleteJWTToken(token);
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
     }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class LoginSuccessUserInfoVo {
     private String username;
-    private List<String> permissions;
+    private List<String> roles;
 }

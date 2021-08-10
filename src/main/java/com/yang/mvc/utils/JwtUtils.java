@@ -63,9 +63,11 @@ public class JwtUtils {
     public static String refreshTokenExpired(String token) {
         DecodedJWT jwt = JWT.decode(token);
         String subject = jwt.getSubject();
-        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
-        JWTCreator.Builder builer = JWT.create().withExpiresAt(date);
+        long time = System.currentTimeMillis();
+        Date date = new Date(time);
+        Date expire = new Date(time + EXPIRE_TIME);
+        JWTCreator.Builder builer = JWT.create().withExpiresAt(expire).withIssuedAt(date);
         builer.withSubject(subject);
         return builer.sign(algorithm);
     }

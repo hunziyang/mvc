@@ -8,10 +8,12 @@ import com.yang.mvc.common.vo.LoginUserInfoVo;
 import com.yang.mvc.security.annotation.authentication.UrlPass;
 import com.yang.mvc.service.UsersService;
 import com.yang.mvc.utils.JwtUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +55,17 @@ public class UsersController {
         }
         String token = JwtUtils.sign(user.getUsername());
         response.setHeader(JwtUtils.AUTH_HEADER, JwtUtils.TOKEN_PREFIX + token);
-        usersCacheService.insertJWTToken(token,user);
+        usersCacheService.insertJWTToken(token, user);
         return Result.success(user);
     }
+
+    @PostMapping("/users/logout")
+    public Result logout(@RequestHeader(JwtUtils.AUTH_HEADER) String header) {
+        if (StringUtils.isEmpty(header)) {
+            return Result.error();
+        }
+        usersCacheService.deleteJWTToken(StringUtils.removeStart(header,JwtUtils.TOKEN_PREFIX));
+        return Result.success();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.yang.mvc.config;
 
-import com.yang.mvc.security.Interceptor.LoginInterceptorHandler;
+import com.yang.mvc.security.Interceptor.JWTInterceptorHandler;
+import com.yang.mvc.security.Interceptor.RolesInterceptorHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -11,7 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptorHandler()).addPathPatterns("/**");
+        registry.addInterceptor(new JWTInterceptorHandler()).addPathPatterns("/**");
+        registry.addInterceptor(new RolesInterceptorHandler()).addPathPatterns("/**");
     }
 
     @Override

@@ -9,6 +9,7 @@ public enum ResultCode {
     FAILED(400, "失败"),
     // 未认证
     UNAUTHENTICATION(401, "认证失败"),
+    UNAUTHORIZATION(403,"授权失败"),
     //接口不存在
     NOT_FOUND(404, "此接口不存在"),
     //服务器内部错误

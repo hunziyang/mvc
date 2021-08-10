@@ -17,7 +17,7 @@ public class Users {
     private ObjectId id;
     private String username;
     private String password;
-    private List<String> permissions;
+    private List<String> roles;
     @Version
     private Integer revision;
     private Date createdTime;
